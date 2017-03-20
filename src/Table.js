@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
+import TableHeader from './TableHeader';
 
 class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = { records: this.props.initialRecords };
+    this.sort = this.sort.bind(this);
+  }
+
+  sort(attr) {
+    const { records } = clone(this.state);
+    records.sort((a, b) => a[attr].localeCompare(b[attr]));
+    this.setState({ records });
   }
 
   render() {
@@ -13,7 +21,10 @@ class Table extends React.Component {
           <thead>
           <tr>
             <th>#</th>
-            <th>First Name</th>
+            <TableHeader
+                title="First Name"
+                attr="firstName"
+                onClick={this.sort} />
             <th>Last Name</th>
             <th>Birth Date</th>
           </tr>
@@ -37,7 +48,7 @@ class Table extends React.Component {
   }
 }
 
-SortableTable.defaultProps = {
+Table.defaultProps = {
   initialRecords: [
     { firstName: "Angus", lastName: "Young", birthDate: "1955-03-31" },
     { firstName: "Malcolm", lastName: "Young", birthDate: "1953-01-06" },
