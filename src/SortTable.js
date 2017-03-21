@@ -1,23 +1,60 @@
 import React, { Component } from 'react';
 import TableHeader from './TableHeader';
+import clone from 'clone';
 
-class Table extends React.Component {
+class SortTable extends Component {
   constructor(props) {
     super(props);
+
     this.state = { records: this.props.initialRecords };
     this.sort = this.sort.bind(this);
   }
 
-  sort(attr) {
-    const { records } = clone(this.state);
-    records.sort((a, b) => a[attr].localeCompare(b[attr]));
+  wrap(array) {
+    return array.map((item, i) => {
+      return { key: item, position: i }
+    });
+  }
+
+  unwrap(array) {
+    return array.map(item => item.key);
+  }
+
+  getComparator(attr, order) {
+    if (order === '^') {
+      return function (a, b) {
+        const diff = b.key[attr].localeCompare(a.key[attr]);
+        if (diff === 0) {
+          return a.position - b.position;
+        }
+        return diff;
+      };
+    } else {
+      return function (a, b) {
+        const diff = a.key[attr].localeCompare(b.key[attr]);
+        if (diff === 0) {
+          return a.position - b.position;
+        }
+        return diff;
+      }
+    }
+  }
+
+  sort(attr, order) {
+    let { records } = clone(this.state);
+    const comparator = this.getComparator(attr, order);
+    records = this.wrap(records);
+    records.sort(comparator);
+    records = this.unwrap(records);
+
     this.setState({ records });
   }
 
   render() {
-    let { records } = this.state;
+    const { records } = this.state;
+
     return (
-        <Table striped bordered condensed hover>
+        <table>
           <thead>
           <tr>
             <th>#</th>
@@ -29,11 +66,12 @@ class Table extends React.Component {
             <th>Birth Date</th>
           </tr>
           </thead>
+
           <tbody>
           {records.map(this.renderRow)}
           </tbody>
-        </Table>
-    );
+        </table>
+    )
   }
 
   renderRow(record, index) {
@@ -48,7 +86,7 @@ class Table extends React.Component {
   }
 }
 
-Table.defaultProps = {
+SortTable.defaultProps = {
   initialRecords: [
     { firstName: "Angus", lastName: "Young", birthDate: "1955-03-31" },
     { firstName: "Malcolm", lastName: "Young", birthDate: "1953-01-06" },
@@ -58,3 +96,5 @@ Table.defaultProps = {
     { firstName: "Cliff", lastName: "Williams", birthDate: "1949-12-14" }
   ]
 };
+
+export default SortTable;
