@@ -62,8 +62,14 @@ class SortTable extends Component {
                 title="First Name"
                 attr="firstName"
                 onClick={this.sort} />
-            <th>Last Name</th>
-            <th>Birth Date</th>
+            <TableHeader
+                title="Last Name"
+                attr="lastName"
+                onClick={this.sort} />
+            <TableHeader
+                title="Birth Date"
+                attr="birthDate"
+                onClick={this.sort} />
           </tr>
           </thead>
 
