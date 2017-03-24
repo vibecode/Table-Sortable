@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TableHeader from './TableHeader';
 import clone from 'clone';
+import './SortTable.css';
 
 class SortTable extends Component {
   constructor(props) {
@@ -54,7 +55,7 @@ class SortTable extends Component {
     const { records } = this.state;
 
     return (
-        <table>
+        <table className="table">
           <thead>
           <tr>
             <th>#</th>
