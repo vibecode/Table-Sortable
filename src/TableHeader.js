@@ -13,10 +13,10 @@ class TableHeader extends Component {
   setOrder() {
     const { order } = this.state;
 
-    if (order == null || order === 'v') {
-      this.setState({ order: '^' });
+    if (order == null || order === 'down') {
+      this.setState({ order: 'up' });
     } else {
-      this.setState({ order: 'v' });
+      this.setState({ order: 'down' });
     }
   }
 
@@ -28,8 +28,14 @@ class TableHeader extends Component {
 
   render() {
     let direction;
+
+    const orderIcon = new Map([
+        ['up', '\u25b2'],
+        ['down', '\u25bc'],
+    ]);
+
     if (this.state.order) {
-      direction = " " + this.state.order;
+      direction = " " + orderIcon.get(this.state.order);
     }
 
     return (

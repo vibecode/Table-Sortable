@@ -22,7 +22,7 @@ class SortTable extends Component {
   }
 
   getComparator(attr, order) {
-    if (order === '^') {
+    if (order === 'up') {
       return function (a, b) {
         const diff = b.key[attr].localeCompare(a.key[attr]);
         if (diff === 0) {
@@ -84,10 +84,10 @@ class SortTable extends Component {
   renderRow(record, index) {
     return (
         <tr key={index}>
-          <th>{index + 1}</th>
-          <th>{record.firstName}</th>
-          <th>{record.lastName}</th>
-          <th>{record.birthDate}</th>
+          <td>{index + 1}</td>
+          <td>{record.firstName}</td>
+          <td>{record.lastName}</td>
+          <td>{record.birthDate}</td>
         </tr>
     );
   }
